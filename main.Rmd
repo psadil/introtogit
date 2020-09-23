@@ -1,0 +1,113 @@
+---
+title: "Hello my name is <yournamehere>"
+author: "Patrick Sadil"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+<!-- edit name1 and name2 in the YAML above -->
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+# knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+library(tidyverse) # load tidyverse package
+```
+
+
+
+```{r}
+nodes <- DiagrammeR::create_node_df(
+  n = 3,
+  label = c("zero","low","high"))
+
+DiagrammeR::create_graph(nodes_df = nodes) %>%
+  DiagrammeR::render_graph(layout = "tree")
+```
+
+
+---
+
+# Keep your goals in mind
+
+- The best backup and version control systems are the ones that you use continually.
+
+-- 
+
+ - If you're satisfied with Box, Google Drive, USB drives, etc, then keep at it.
+ 
+-- 
+
+- I think that `git` encourages good practices and so using it has the potential to make you a better researcher, teacher, writer.
+
+--
+
+- My goals are to 
+
+-- 
+
+ 1) Show you how `git` (with GitHub) can replace your current method
+ 
+ -- 
+ 
+ 2) Overview a few ways in which it'll make you better
+
+
+--- 
+
+# `git` does the version control
+
+- Version Control
+
+-- 
+
+ - Controls the versions
+ 
+--
+
+- Version
+
+-- 
+
+ - For a software engineer, this is 1.0.23
+ 
+-- 
+
+ - For a researcher, a version often means a particular output
+ 
+  - Each experimental pilot
+  - The code that made a graph six weeks ago
+  - All of your analyses prior to a poster vs. prior to a publication
+  
+-- 
+
+- As things change, you want to know
+
+ - the exact state of a project at a certain time (reproducible!)
+ - *why* it was in that state
+
+???
+
+There are dozens of comics on version control.
+
+---
+
+# Initialize a repository with `git init`
+
+```{bash}
+
+```
+
+
+
+---
+
+# Resources I consult regularly
+
+- [Git Pro Book](https://git-scm.com/book/en/v2)
+- Repositories of people I trust (e.g., [tidyverse packages](https://github.com/tidyverse))
