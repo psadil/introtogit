@@ -1,6 +1,6 @@
 ---
-title: "Untitled"
-output: bookdown::html_document2
+title: "Intro to Git"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -8,92 +8,70 @@ knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 library(tidyverse)
 ```
 
-```{r}
-nodes <- DiagrammeR::create_node_df(
-  n = 3,
-  label = c("zero","low","high"))
+# What is `Git`? 
 
-DiagrammeR::create_graph(nodes_df = nodes) %>%
-  DiagrammeR::render_graph(layout = "tree")
-```
-
+Git is a system for "version control". I don't have much nuance to add to this phrase, other than to highlight that, in the long run, it will be helpful to spend time thinking about what is meant by a "version" for reserach. For myself, I find that a "version" means a particular output: each pilot of an experiment, the code right before a meeting, all of your analysis right before a poster, the analyses immediately before a publication. For me, a version tends to mean the exact state of a project as a certain time, something that I'll want to be easily accessible. Your own definition of a version will probably change as you go through graduate school.
 
 # Keep your goals in mind
 
-- The best backup and version control systems are the ones that you use continually.
+The best backup and version control systems are the ones that you use continually. If you're satisfied with Box, Google Drive, USB drives, etc, then keep at it. I think that `Git` encourages good practices and so using it has the potential to make you a better researcher, teacher, writer. My goals are to 1) Show you how `Git` (with GitHub) can replace your current method 2) Overview a few ways in which it'll make you better.
 
- - If you're satisfied with Box, Google Drive, USB drives, etc, then keep at it.
+As a side note, I think that starting and practicing `Git` carries another advantage. There are many tools, originally designed for software engineering, that are enormously helpful to researchers. These tools are integral to how research is becoming more reliant on software, more open, more collaborative. All of these tools are designed to work together. Using and learning `Git` is a step towards learning a whole ecosystem. If you haven't spent much time on the command line, `Git` will feel foreign, clunky, and hard. But the more that you become familiar with using tools like `Git`, the easier it will be to start learning these other tools.
 
-- I think that `git` encourages good practices and so using it has the potential to make you a better researcher, teacher, writer.
 
-- My goals are to 
+# Installation (Windows-Specific)
 
- 1) Show you how `git` (with GitHub) can replace your current method
- 
- 2) Overview a few ways in which it'll make you better
 
-# `git` does the version control
+1. [Install Notepad++](https://notepad-plus-plus.org/downloads/)
+2. [Install Git](https://git-scm.com/download)
 
-- Version Control
+  - While installing `Git`, there will be a moment to select a default editor. Notepad++ is relatively easy to use. The rest of the defaults can be left as is.
 
- - Controls the versions
- 
-- Version
-
- - For a software engineer, this is 1.0.23
- 
- - For a researcher, a version often means a particular output
- 
-  - Each experimental pilot
-  - The code that made a graph six weeks ago
-  - All of your analyses prior to a poster vs. prior to a publication
-  
-- As things change, you want to know
-
- - the exact state of a project at a certain time (reproducible!)
- - *why* it was in that state
-
-# Steps
-
-1. Install Notepad++
-2. Install Git
- 1. During install, select notepad++
+You will be able to start `Git` by right-clicking a folder and then selecting "Git Bash Here".
 
 # Configure git
 
-## Configure ID
+`Git` is a system for doing version control, but it's designed to make collaborations central. For this reason, the versions you save will be associated with your name and email. This email will be the same email that you use to create a GitHub account. 
 
-```{bash, eval = FALSE}
-git config --global user.name "Patrick Sadil"
-git config --global user.email psadil@gmail.com
+Start Git Bash and type the following. 
+
+```{bash}
+git config --global user.name "Your Name"
+git config --global user.email email@gmail.com
 ```
 
-## Check Configuration
+The above pattern will start to be familiar. First comes the main command, `git`, followed by a subcommand (e.g., `config`). Then there will be a set of flags (`--global`), followed by arguments (e.g., `user.name "Patrick Sadil"`). The flags modify the subcommand, and the arguments are used while the subcommand is executed. This setup and terminology -- command, subcommand, flags, arguments -- is an example of the general knowledge you gain by working with `Git`. You will notice this pattern a lot with `Git`, and you will see it on many other command line tools.
 
-```{bash, eval = FALSE}
+To check elements of how `Git` is configured, type the following.
+
+```{bash}
 git config --list
 ```
 
-glance at editor (should be notepad++)
+Notice the pattern: you're again working with the config subcommand, but you're modifying what it does by using a different flag (`--list`). If you want to see all of the options for working with a subcommand, you can usually give the flag `--help`, as in
 
-- make directory (demo)
+```{bash}
+git config --help
+```
+
+The output will have a line for at least your `user.name` and `user.email`. You should also see a line for `core.editor`, which ought to point to notepad++. You can always change these configuration settings later. Setting the editor is a bit tricky, because you will need to get the quotations correct. The following command would work to setup your editor to be notepad++.
+
+```{bash}
+git config --global core.editor "'C:\Program Files\Notepad++\notepad++.exe' -multiInst -notabbar -nosession -noPlugin"
+```
+
+Once you've finished the configuration, close the terminal.
 
 # Initialize a repository with `git init`
 
+Make a new directory. Call it "demo". Start `Git` in that folder. The first step will be to 'initialize' `Git`. Here, to initialize is the verb used for associating `Git` with a particular folder.
+
 ```{bash, eval = FALSE}
 git init
+# Initialized empty Git repository in 
 ```
 
-- look through .git folder
-
-# Check new status with `git status`
-
-```{bash, eval = FALSE}
-git status
-# Initialized empty Git repository in /home/psadil/.git/
-```
-
-- repository: a folder that is tracked by `Git`
+New terminology "repository", often shortened to "repo". A repository is a particular folder that is under version control by `Git`.
 
 # Check new status with `git status`
 
