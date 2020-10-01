@@ -1,6 +1,7 @@
 ---
 title: "Intro to Git"
-output: html_document
+output: pdf_document
+urlcolor: blue
 ---
 
 ```{r setup, include=FALSE}
@@ -8,19 +9,17 @@ knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 library(tidyverse)
 ```
 
-# What is `Git`? 
-
-Git is a system for "version control". I don't have much nuance to add to this phrase, other than to highlight that, in the long run, it will be helpful to spend time thinking about what is meant by a "version" for reserach. For myself, I find that a "version" means a particular output: each pilot of an experiment, the code right before a meeting, all of your analysis right before a poster, the analyses immediately before a publication. For me, a version tends to mean the exact state of a project as a certain time, something that I'll want to be easily accessible. Your own definition of a version will probably change as you go through graduate school.
+Git is a system for "version control". I don't have much nuance to add to this phrase, other than to highlight that, in the long run, it will be helpful to spend time thinking about what is meant by a "version" for research. For myself, I find that a "version" means a particular output: each pilot of an experiment, the code right before a meeting, all of your analysis right before a poster, the analyses immediately before a publication. I find that a version tends to mean the exact state of a project as a certain time, something that I want to be easily accessible to a future me. Your own definition of a version will probably change as you go through graduate school.
 
 # Keep your goals in mind
 
-The best backup and version control systems are the ones that you use continually. If you're satisfied with Box, Google Drive, USB drives, etc, then keep at it. I think that `Git` encourages good practices and so using it has the potential to make you a better researcher, teacher, writer. My goals are to 1) Show you how `Git` (with GitHub) can replace your current method 2) Overview a few ways in which it'll make you better.
+The best backup and version control systems are the ones that you use continually. If you're satisfied with Box, Google Drive, USB drives, etc, then keep at it. But I `Git` has two main advantages. First, there are many tools, originally designed for software engineering, that are enormously helpful to researchers. These tools are integral research's progression to something that is more reliant on software, more open, more collaborative. All of these tools are designed to work together. Using and learning `Git` is a step towards learning a whole ecosystem of tools. If you haven't spent much time on the command line, `Git` will feel foreign, clunky, and hard. But the more that you become familiar with using tools like `Git`, the easier it will be to start learning these other tools.
 
-As a side note, I think that starting and practicing `Git` carries another advantage. There are many tools, originally designed for software engineering, that are enormously helpful to researchers. These tools are integral to how research is becoming more reliant on software, more open, more collaborative. All of these tools are designed to work together. Using and learning `Git` is a step towards learning a whole ecosystem. If you haven't spent much time on the command line, `Git` will feel foreign, clunky, and hard. But the more that you become familiar with using tools like `Git`, the easier it will be to start learning these other tools.
+Second, `Git` is designed to facilitate collaboration. We didn't have much of an opportunity to talk about this. As a researcher, easy collaboration might be more important than version control. It's this possibility of easier collaboration that is my main motivation for using `Git`. For a description of what this looks like for a software engineer [click on the pdf here](https://about.gitlab.com/blog/2016/11/30/how-to-explain-gitlab-to-anyone/) (the link talks about GitLab, which is very might like GitHub -- another place that stores remote repositories). From a researcher's perspective [click here to see a recent talk by Richard McElreath](https://www.youtube.com/watch?v=zwRdO9_GGhY), who details both a vision for collaboration and hints at the ecosystem of software tools.
 
+# Installation 
 
-# Installation (Windows-Specific)
-
+## Windows
 
 1. [Install Notepad++](https://notepad-plus-plus.org/downloads/)
 2. [Install Git](https://git-scm.com/download)
@@ -29,36 +28,36 @@ As a side note, I think that starting and practicing `Git` carries another advan
 
 You will be able to start `Git` by right-clicking a folder and then selecting "Git Bash Here".
 
+## MacOS
+
+The installation chapter from the [Git Pro Book](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) includes a note about how to install on MacOS. Once you've installed Git, when `git --version` produces a meaningful output in the terminal, you'll be able to use all of the following commands in that terminal.
+
 # Configure git
 
-`Git` is a system for doing version control, but it's designed to make collaborations central. For this reason, the versions you save will be associated with your name and email. This email will be the same email that you use to create a GitHub account. 
-
-Start Git Bash and type the following. 
+Start Git Bash and type the following (Again, Windows is silly and needs a separate terminal to work with Git. If you are on Mac/Linux, you can type these commands into the regular terminal).
 
 ```{bash}
 git config --global user.name "Your Name"
 git config --global user.email email@gmail.com
 ```
 
-The above pattern will start to be familiar. First comes the main command, `git`, followed by a subcommand (e.g., `config`). Then there will be a set of flags (`--global`), followed by arguments (e.g., `user.name "Patrick Sadil"`). The flags modify the subcommand, and the arguments are used while the subcommand is executed. This setup and terminology -- command, subcommand, flags, arguments -- is an example of the general knowledge you gain by working with `Git`. You will notice this pattern a lot with `Git`, and you will see it on many other command line tools.
+The above pattern will start to be familiar. First comes the main command, `git`, followed by a subcommand (e.g., `config`). Then there will be a set of flags (`--global`), followed by arguments (e.g., `user.name "Patrick Sadil"`). The flags modify the subcommand, and the arguments are used while the subcommand runs. This setup and terminology -- command, subcommand, flags, arguments -- is an example of the general knowledge you gain by working with `Git`. You will notice this pattern a lot with `Git`, and you will see it on many other command line tools.
 
-To check elements of how `Git` is configured, type the following.
+To see how `Git` is configured, type the following.
 
 ```{bash}
 git config --list
 ```
 
-Notice the pattern: you're again working with the config subcommand, but you're modifying what it does by using a different flag (`--list`). If you want to see all of the options for working with a subcommand, you can usually give the flag `--help`, as in
+The output will have a line for at least your `user.name` and `user.email`. You should also see a line for `core.editor`, which ought to point to notepad++. You can always change these configuration settings later. Setting the editor is a bit tricky, because you will need to get the quotations correct. The following command would work to setup your editor to be notepad++, on Windows: `git config --global core.editor "'C:\Program Files\Notepad++\notepad++.exe' -multiInst -notabbar -nosession -noPlugin"`. This command assumes that the 64-bit version of notepad was installed; if the 32-bit version of notepad++ was installed, you'd want `git config --global core.editor "'C:\Program Files (x86)\Notepad++\notepad++.exe' -multiInst -notabbar -nosession -noPlugin"`. If you're not sure which version is installed, check those paths (e.g., look whether there are files in `C:\Program Files (x86)\Notepad++\notepad++.exe` versus `C:\Program Files\Notepad++\notepad++.exe`). Also, this command will be slightly different on other operating systems. For example neither Ubuntu nor MacOS will have a folder called `C:\Program Files`. On a system like Ubuntu, you might go with `gedit`, rather than notepad++ (e.g., you could type `git config --global core.editor gedit`, since `gedit` is also relatively easy to use and comes pre-installed).
+
+Notice the pattern: you're again working with the `config` subcommand, but you're modifying what it does by using a different flag (`--list`). If you want to see all of the options for working with a subcommand, you can usually give the flag `--help`, as in
 
 ```{bash}
 git config --help
 ```
 
-The output will have a line for at least your `user.name` and `user.email`. You should also see a line for `core.editor`, which ought to point to notepad++. You can always change these configuration settings later. Setting the editor is a bit tricky, because you will need to get the quotations correct. The following command would work to setup your editor to be notepad++.
-
-```{bash}
-git config --global core.editor "'C:\Program Files\Notepad++\notepad++.exe' -multiInst -notabbar -nosession -noPlugin"
-```
+As you become more proficient with `Git`, you will start trying more complicated tasks. To accomplish those, you will likely consult the internet. Before you run a new command, or apply a new flag, it's good practice to consult the help page. 
 
 Once you've finished the configuration, close the terminal.
 
@@ -68,12 +67,14 @@ Make a new directory. Call it "demo". Start `Git` in that folder. The first step
 
 ```{bash, eval = FALSE}
 git init
-# Initialized empty Git repository in 
+# Initialized empty Git repository in C:/Users/psadi/Desktop/demo/.git/
 ```
 
-New terminology "repository", often shortened to "repo". A repository is a particular folder that is under version control by `Git`.
+New terminology! A "repository", often shortened to "repo" is a particular folder that is under version control by `Git`.
 
 # Check new status with `git status`
+
+There are many situations in which you will want to understand what's new with a repository. The subcommand for this is `staus`
 
 ```{bash, eval = FALSE}
 git status
@@ -82,18 +83,13 @@ git status
 # nothing to commit (create/copy files and use "git add" to track)
 ```
 
-New words
-- branch, and 'master'
-- commit
-- track
+Three new sets of words: "branch" (with "master"), "commit", and "track". Starting with the last of these, to track is the verb `Git` uses to mean something whose version is controlled. So, this tip is saying that the next step of version control will involve directing `Git` which files it should look for.
 
-# Add data file
+# Make changes to the repository
 
-Working with fishes csv
+Add the file `fishdata.csv` to your folder, and take a look at how `Git` has responded.
 
-Check out how the status has changed
-
-```{bash, eval = FALSE}
+```{bash}
 git status
 #On branch master
 
@@ -101,17 +97,25 @@ git status
 
 #Untracked files:
 #  (use "git add <file>..." to include in what will be committed)
-#	data.csv
-	
+#        fishdata.csv
+
 #nothing added to commit but untracked files present (use "git add" to track)
 ```
 
-Git is aware that there is some file there, but that file is not yet 'tracked'.
+Again, we see the same messages about branches and commits. Now we, also see a message about an "untracked" file. This is a file that is in the repository, but which is not yet under version control.
 
-# git add
+# Track files with `git add`
 
-```{bash, eval = FALSE}
-git add fish.csv
+You must explicitly instruct `Git` to track files. To track the `fishdata.csv` file you can run the following
+
+
+```{bash}
+git add fishdata.csv
+```
+
+Check out the new status 
+
+```{bash}
 git status
 # On branch master
 
@@ -119,208 +123,234 @@ git status
 
 # Changes to be committed:
 #   (use "git rm --cached <file>..." to unstage)
-#	new file:   data.csv
+#	new file:   fishdata.csv
 ```
 
-New words
-- 'staged' this is something that Git is aware about, but has not yet committed to memory
+When you run `git add`, you are telling git to track the changes made to a file. In this case, the changes are that there is a new file. `Git` now knows that it should pay attention to this file (or changes that have been made to the file), but the changes are *not* yet saved. Changes that have been added are also called changes that have been "staged". There are many steps to this version control business. 
 
-# commit
+# Save a version with `git commit`
+
+You save a version of your repository with the subcommand `commit`. This will open up an editor, and you will be prompted to write a message. For now, you can type the message "Added first data file".
 
 ```{bash, eval = FALSE}
 git commit
-#[master (root-commit) 3b1dd4b] Add initial data
-# 1 file changed, 0 insertions(+), 0 deletions(-)
-# create mode 100644 data.csv
-git log
-#commit 3b1dd4b34ff438234522df589c87222c8e49acdc (HEAD -> master)
-#Author: Patrick Sadil <psadil@gmail.com>
-#Date:   Wed Sep 30 14:53:17 2020 -0400
-#    Add initial data
-#    
-#    Header should be an answer to "if applied, this commit will ..."
+#[master (root-commit) dd3e9eb] Added first data file
+# 1 file changed, 210 insertions(+)
+# create mode 100644 fishdata.csv
 ```
 
+When you commit changes, you create a snapshot of all of the tracked files, a snapshot that you will be able to access at a later date. The point of a commit message is to give those changes an explicit context, context to help explain why you've made changes. Ideally, commit messages will be informative, describing some specific goal that the changes have accomplished (see the above link for more details). There is an art to writing good commit messages ([for a software engineer's take, see here ](https://chris.beams.io/posts/git-commit/)). But not every commit message needs to be poetry. For example, when you're done working for the day, the project might not have a particularly clear context, and yet you will still need to backup your code. Plenty of messages look like "stopped for the day".
 
-# tag
+# Review the history with `git log`
 
-add another file
-
-```{bash, eval = FALSE}
-git add analysis.R
-git commit -m "first analysis"
-git tag -a oct-1-2020
-# before meeting
-
-# I'm going to talk about some cool plots
-```
-
-# checkout the past
+To see a list of the commits you've made, use `log`.
 
 ```{bash}
-touch analysis2.R
-touch data.txt
-# edit data
-git add .
-git commit -m "Prepare for new analyses"
-git log --oneline
+git log
+#commit dd3e9eb11dea6801a3cea76d86bfc88976255fe6
+#Author: Patrick Sadil <psadil@gmail.com>
+#Date:   Thu Oct 1 13:02:50 2020 -0400
+
+#    Added first data file
 ```
+
+With each commit you make, `Git` associates a long ID (e.g., `f9390d95f5e369e12d6a65c8f5fa70b123cf8343`). You will not typically need to use that ID directly (more in the next session). The log also contains information about the author of the commit, their email (i.e., the things you setup with `git config`), when the commit was made, and what message was written about the commit.
+
+For easier browsing, the logs can be condensed with the `--oneline` flag.
+
+```{bash}
+git log --oneline
+#dd3e9eb (HEAD -> master) Added first data file
+```
+
+Each commit describes a project during a certain moment in time. As a researcher, you probably won't care about most moments (e.g., you probably won't ever need to go back to the status of the code at the end of each day). It's good that they are backed up, but you won't ever need to return to those versions. With `Git`, as with many systems of digital memory, the problem is rarely space; we can store loads of data indefinitely. Instead, the challenge is to develop a good system of indexing things, so that you can find what you've backed up. For this, it would be helpful to know about which commits are the most important.
+
+# Mark important commits with `git tag`
+
+To mark a particular commit as important, you "tag" it. First, move the file "fish_figure.R" into your repository, stage it, then commit it. I've written the message "Added analyses of data".
+
+```{bash}
+# move file into respository
+git add fish_figure.R
+git commit
+```
+
+You will now use a new subcommand to mark this as an important commit, `tag`. Just like when you are committing something, you are given the opportunity to add a bit of context to the tag, and why it might be important. If this is the stage of the code right before a meeting with my adviser, my tag message might look like "before meeting; I'm going to talk about some cool plots"
+
+```{bash}
+git tag -a oct-1-2020
+```
+
+`-a` stands for "annotate". The annotation is given by "oct-1-2020". The annotation will be a method for finding that commit. I tag many projects before each meeting with an adviser, so many of my tags are dates. 
+
+# To view previous versions of the code, use `git checkout`
+
+You've made two commits, and indicated that the second one is important. Now, you will see how to look at previous versions of your code. 
+
+First, make some small change to `fish_figure.R`. For example, you might add the following comment to the top of the script `# Here is a new comment at the top of the script.` After making the change, track those changes, and then commit. This time, write the commit message a bit differently. 
+
+```{bash}
+git add fish_figure.R
+git commit -m "Add line comment"
+```
+
+Notice that the commit message is written slightly differently. Adding a single comment to `fish_figure.R` was very minor, and so there is not a lot of context. By passing `-m `, you can also type the message directly, without needing to open up the text editor.
+
+Take a look at the logs to see the current version in relation to previous commits
+
+```{bash}
+git log --oneline
+#d447293 (HEAD -> master) Add line comment
+#dc160a6 (tag: oct-1-2020) Added analyses of data
+#dd3e9eb Added first data file
+```
+
+At this point, there are a total of 3 commits, the second one of which you've tagged. To visit the project at that moment in time, you use `git checkout`, and you pass it the annotation you provided earlier.
 
 ```{bash}
 git checkout oct-1-2020
-# take a look at the folder/data
 ```
+
+You can ignore most of the output on the console. But do go look at the file `fish_figure.R`. You will see that the comment is not there. That is, you've visited the files exactly as they looked when you made a tag.
+
+To return to the current state of the files, run the following 
 
 ```{bash}
 git checkout master
 ```
 
-# large files
+Confirm that the third change you committed is in the current working directory (e.g., the comment that you added should be back in the file).
 
-produce figure
+## Side note
+
+You can acess every commit based on the automatically generated ID. To see all of the commits and their IDs, again use the log command.
 
 ```{bash}
-git lfs track "*.png"
+git log
+#commit d447293eea67dfe7e613ca4e28095099fbf7bca0 (HEAD -> master)
+#Author: Patrick Sadil <psadil@gmail.com>
+#Date:   Thu Oct 1 13:09:45 2020 -0400
+
+#    Add line comment
+
+#commit dc160a659f7eb6503c78b3e28b659a91e7d0d89b (tag: oct-1-2020)
+#Author: Patrick Sadil <psadil@gmail.com>
+#Date:   Thu Oct 1 13:03:14 2020 -0400
+
+#    Added analyses of data
+
+#commit dd3e9eb11dea6801a3cea76d86bfc88976255fe6
+#Author: Patrick Sadil <psadil@gmail.com>
+#Date:   Thu Oct 1 13:02:50 2020 -0400
+
+#    Added first data file
 ```
 
 
-# Ignore files
+Your IDs will be different. But if I wanted to get to the commit tagged "oct-1-2020", I could also type the following
 
-in .gitignore, add hippa folder
+```{bash}
+git checkout dc160a659f7eb6503c78b3e28b659a91e7d0d89b
+```
 
-- https://rtyley.github.io/bfg-repo-cleaner/
+Notice also that reference to 'master' again, which has not yet been explained. More on that next.
 
 # Interim
 
-Take a step back. So far, we've started tracking files in a repository. This is 
-okay. Think of this as a chain of snapshots, some of which you've decided to make
-easily accessible (all states are accessible). 
+At this point, you've started tracking files in a repository, and you've explicitly written out the context of all of those changes. The following is a bit esoteric, but I'm mentioning it as a way to start an explanation for what "branch" and "master" refers to, and to prepare you as you look at more resources.
 
-- neat, since you've injected a bit of context into your code. 
- - As with many system of digital memory, the problem is rarely space; we can store 
- loads of data! 
- - Instead, we need good ways of indexing things. This process of committing different
- snapshots, labeling each of them with a context, will be your system of indexing.
- - I find it very helpful to create a tag before any meeting in which I'm going 
- to present a newish analysis, or beforea some version of a paper/poster.
+One way to view a "repository" is as a graph, in the [graph theory sense](https://en.wikipedia.org/wiki/Graph_theory), with nodes and edges between those nodes. 
 
-- HOWEVER! Nothing has been backed up to the cloud! This is for github
 
-# GitHub
+```{r, echo=FALSE, eval=TRUE}
+nodes <- DiagrammeR::create_node_df(
+  n = 3,
+  label = c("dd3e9eb","oct-1-2020","d447293"))
 
-create empty repository
+edges <- DiagrammeR::create_edge_df(
+  from = c(3,2),
+  to = c(2,1)
+)
+
+DiagrammeR::create_graph(
+  nodes_df = nodes,
+  edges_df = edges,
+  attr_theme = "rl") %>%
+  DiagrammeR::render_graph()
+```
+As you continually commit changes, you will add nodes to this graph, one node for each commit. Each node will have an edge, pointing some earlier commit. Some of those nodes will be easily (the tagged ones), but all are accessible. 
+
+Notice also that this graph is one long chain, with each commit pointing to exactly one unique node. There are ways to add 'branches' to the graph, where you can maintain separate versions of your code simultaneously. With this branching, `Git` becomes very powerful. The primary branch is often called the "master" branch. This is currently the default name on a new `Git` repository (but see below). Similarly to how you can pass both IDs and a tag's annotation to `git checkout`, you can also pass the name of a branch. When you use the name of a branch, `Git` checks out the most recent commit on that branch. So, earlier, when you ran `git checkout master`, it's like you told `Git` to "convert all files to the most recent commit of the master branch", which happened to be the most recent versions of the files. Branching gets complicated very quickly. For more information, see the references at the end of this document (especially [the branching chapter](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell) of the Git Pro book). As you learn more about `Git`, branches may become important, and you will continue to encounter this graph metaphor.
+
+# Interface with remotes using `git remote`
+
+At this point, `Git` is *almost* as helpful as a system like box, google drive, etc. You've saved many versions of your files, and you've associated each of those versions with a bit of context. But all of these versions are only stored locally! This means that, if something happened to your computer, all of your work would be lost. You will want to store a copy of your repository at some "remote" location. There are many different websites dedicated to hosting `Git` repositories. GitHub is a popular one.
+
+On GitHub, create a new repository. Call that repository the same thing as you called your local repository (e.g., "demo"). Once created, you will need to link up the two repositories, the one on GitHub and on your local computer. In my case, that looks like
 
 ```{bash}
-git remote add origin git@github.com:psadil/tmp.git
-git remote -v
-git push -u --follow-tags origin master
-git status
+git remote add origin https://github.com/psadil/demo.git
 ```
 
-# README
+You will then be asked to enter your GitHub user name and password. Your GitHub username may be different than the user.name that you configured with `git config`. 
 
-add readme
-
-These words will mix with github
+You can read that command as saying "add a new remote. It will be referred to as origin. This new remote lives at the website address https://github.com/psadil/demo.git ". You can view the remotes of a local repository by passing the `--verbose` flag without any arguments
 
 ```{bash}
-git add README.md
-git commit -m "Add readme"
-git push
+git remote --verbose
+#origin  https://github.com/psadil/demo.git (fetch)
+#origin  https://github.com/psadil/demo.git (push)
 ```
 
-
-NOTE: This is a good time to talk about conventions. There's a sense in which nothing is 'special' about a readme file. But historically, careful programmers put readme files in their folders. Github latched on to that idea and made it easy to display that information. I think that's partly for socialogical reasons, as a study in how conventions become solidified into rules. But, it also highlights the importance of looking at other people's work. 
-
-# Issues + branch
-
-Create issue on github
-
-Add a new Bayesian analysis.
-
-Link to Stan website.
+Now that the two repositories are linked -- your local copy of the files and a folder on GitHubs server's that will store another copy -- you need to send your local repository to the remote. The git verb for this is "pushing". Often, you will simply be able to type `git push`. The default remote in `Git` is named 'origin', and `Git` will push the current branch. So, typing `git push` would implicitly mean `git push origin master`. You may type either.
 
 ```{bash}
-git checkout -b dev/bayes
-touch R/model.stan
-touch R/run-stan.R
-git add .
-git commit
-# Add mixed effects model
-
-# Closes #1
-git push --set-upstream origin dev/bayes
+git push origin master
 ```
 
- checkout on github
+With that push, you've backed up your code!
 
-# merge branch into master
+But one more note. When you push, `Git` does not, by default, also send your tags. To send tags, you need to add the `--follow-tags` flag. Since you've setup the origin branch, you can now push without explicitly defining the remote and branch name, as in
 
 ```{bash}
-git checkout master
-git merge dev/bayes
-git push
+git push --follow-tags
 ```
 
-# delete branch
+## Note
 
-branches and tags are very similar. 
-- a tag is a snapshot that you always want to find easily
-
-- a branch should be associated with a particular thing you're trying to do. 
- - A new analysis
- - fixing some bug
- - working on a new version of an experiment
- 
-That's why it's helpful to associate with an issue
-
-A branch resolves an issue. When the issue is resolved, delete the branch
+When you created an empty repository on GitHub, you will have seen a set of instructions that are slightly different than the ones written above. They will look like
 
 ```{bash}
-git branch -d dev/bayes
-git push --delete origin dev/bayes
+git remote add origin https://github.com/psadil/demo.git
+git branch -M main
+git push -u origin main
 ```
 
-look around on github. see that the issue has been "closed"
+The difference is that GitHub is encouraging you to change the name of your default branch, replacing "master" with "main". The line `git branch -M main` says, "change the name of the current brain to main". This is an effort by GitHub to avoid further decontextualize the meaning of "master". [See here](https://github.com/github/renaming), and [also here](https://en.wikipedia.org/wiki/Master/slave_(technology)) for a similar discussion in other technology systems. 
 
-NOTE! This only makes it harder to access the branch! The information is still stored. This is a general principle; deleting committed things is hard. This is both good and bad. On the good side, it means that past versions are usually safe. They'll be harder to access, but you can get to every snapshot. 
+But once you've changed the name of your branch to `main`, some of the defaults in `Git` no longer work. That's why the third line has `-u`, which is short for `--set-upstream`. The first time you push a new branch to remote (a branch that isn't "master"), you need to inform `Git` that this remote is "upstream". Branching, upstream, graphs, pushing -- too many metaphors and they're all mixed. Upstream is meant to evoke the idea that the remote is the main copy of a repository, closer to the source of the code. You make changes locally, but you always push those changes back to the source of the code. You only need to set an upstream once. Afterwards, you will be able to do the regular `git push origin main`, or `git push --follow-tags origin main`.
 
-- on the bad side, if you accidentally commit sensitive information (e.g., hippa protected files, subject data), it's hard to rewrite history!
+# Next steps
 
-git bfg repo cleaner
+Now you have a system that is as powerful as box, etc. Admittedly, using `Git` requires more work. But for the reasons outlined above, I think that effort is worth it. If you are brand new to `Git`, I'd recommend next reading at least the first few chapters of the [Git Pro Book](https://git-scm.com/book/en/v2). The first chapters cover these basic commands, in much more detail. However, a lot of learning `Git` involves trying it out. 
 
-https://rtyley.github.io/bfg-repo-cleaner/
+# Extra 
 
+## .gitignore
 
-Now we're starting to do something powerful, really launching off. I think one of the most interesting
-things about Git is that it provides context for the different stages, and encourages you to focus on actionable goals. 
+Sometimes, you will want to explicitly ignore files in the folder. These can be done by adding those files to a `.gitignore` file. We talked about how a `.gitignore` folder might contain the line `hippa`, if you wanted to always make sure that `Git` ignored a folder called "hippa".
 
-# Merge conflicts
+Most coding languages generate temporary files that you don't need to store. For this reasons, GitHub has a repository dedicated to commonly used `.gitignore` files, [here](https://github.com/github/gitignore). For example, [here is a file for R](https://github.com/github/gitignore/blob/master/R.gitignore), and [here is one for python](https://github.com/github/gitignore/blob/master/Python.gitignore). You could add the lines of those files to the `.gitignore` file in your own projects. See how easy it is to share code with GitHub :).
+
+## Larger Files
+
+`Git` is best at storing code, files that can be opened in a text editor. If you start storing larger files, binaries, things that end in '.pdf', '.docx', '.png', etc, your repository will quickly become very large, and the different commands will start taking a long time to run. For this reason, you will often want to avoid adding such files to your repository (they can be inside your folder, but don't call `git add` on them). There are two points here. First, `Git` isn't for everything. For example, I organize my pdfs with Zotero, and backup those pdfs using box. Second, there are other tools for version control that integrate very smoothly with `Git`. I like [`Git LFS`](https://git-lfs.github.com/) (Large File Storage). For example, when an experiment involves images, I track the experimental code with `Git` and the images with `Git LFS`. If all of the images are stored as .png files in the repository folder, typing the following will put those under version control by `Git LFS`.
 
 ```{bash}
-git checkout -b edit-data
-# edit
-git add data
-git commit -m "fix data file"
-git checkout master
-# edit data file here, too
-git add data
-git commit -m "fix data on master"
-git merge edit-data
-#Auto-merging data.csv
-#CONFLICT (content): Merge conflict in data.csv
-#Automatic merge failed; fix conflicts and then commit the result.
-git status
-
-git log --oneline --graph --all
-# fix merge conflicts
-
+git lfs track "*.png"
+git add .gitattributes
 ```
 
-# SSH keys
+This allows me to keep a `Git`-focused workflow, while still allowing the images to be connected with the experiment. 
 
-
-# Resources I consult regularly
-
-- [Git Pro Book](https://git-scm.com/book/en/v2)
-- Repositories of people I trust (e.g., [tidyverse packages](https://github.com/tidyverse))
+The main competitor to LFS is [`Git-annex`](https://git-annex.branchable.com/). Git annex is much harder to use, and, as compared to LFS, Git-annex doesn't play nicely with GitHub/GitLab. However, the fMRI community has built a tool on top of `Git-annex`, called [datalad](https://www.datalad.org/). `datalad` promises to bring collaborative version control to neuroimaging. 
