@@ -1,0 +1,348 @@
+---
+title: "Untitled"
+output: bookdown::html_document2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+library(tidyverse)
+```
+
+```{r}
+nodes <- DiagrammeR::create_node_df(
+  n = 3,
+  label = c("zero","low","high"))
+
+DiagrammeR::create_graph(nodes_df = nodes) %>%
+  DiagrammeR::render_graph(layout = "tree")
+```
+
+
+# Keep your goals in mind
+
+- The best backup and version control systems are the ones that you use continually.
+
+ - If you're satisfied with Box, Google Drive, USB drives, etc, then keep at it.
+
+- I think that `git` encourages good practices and so using it has the potential to make you a better researcher, teacher, writer.
+
+- My goals are to 
+
+ 1) Show you how `git` (with GitHub) can replace your current method
+ 
+ 2) Overview a few ways in which it'll make you better
+
+# `git` does the version control
+
+- Version Control
+
+ - Controls the versions
+ 
+- Version
+
+ - For a software engineer, this is 1.0.23
+ 
+ - For a researcher, a version often means a particular output
+ 
+  - Each experimental pilot
+  - The code that made a graph six weeks ago
+  - All of your analyses prior to a poster vs. prior to a publication
+  
+- As things change, you want to know
+
+ - the exact state of a project at a certain time (reproducible!)
+ - *why* it was in that state
+
+# Steps
+
+1. Install Notepad++
+2. Install Git
+ 1. During install, select notepad++
+
+# Configure git
+
+## Configure ID
+
+```{bash, eval = FALSE}
+git config --global user.name "Patrick Sadil"
+git config --global user.email psadil@gmail.com
+```
+
+## Check Configuration
+
+```{bash, eval = FALSE}
+git config --list
+```
+
+glance at editor (should be notepad++)
+
+- make directory (demo)
+
+# Initialize a repository with `git init`
+
+```{bash, eval = FALSE}
+git init
+```
+
+- look through .git folder
+
+# Check new status with `git status`
+
+```{bash, eval = FALSE}
+git status
+# Initialized empty Git repository in /home/psadil/.git/
+```
+
+- repository: a folder that is tracked by `Git`
+
+# Check new status with `git status`
+
+```{bash, eval = FALSE}
+git status
+# On branch master
+# No commits yet
+# nothing to commit (create/copy files and use "git add" to track)
+```
+
+New words
+- branch, and 'master'
+- commit
+- track
+
+# Add data file
+
+Working with fishes csv
+
+Check out how the status has changed
+
+```{bash, eval = FALSE}
+git status
+#On branch master
+
+#No commits yet
+
+#Untracked files:
+#  (use "git add <file>..." to include in what will be committed)
+#	data.csv
+	
+#nothing added to commit but untracked files present (use "git add" to track)
+```
+
+Git is aware that there is some file there, but that file is not yet 'tracked'.
+
+# git add
+
+```{bash, eval = FALSE}
+git add fish.csv
+git status
+# On branch master
+
+# No commits yet
+
+# Changes to be committed:
+#   (use "git rm --cached <file>..." to unstage)
+#	new file:   data.csv
+```
+
+New words
+- 'staged' this is something that Git is aware about, but has not yet committed to memory
+
+# commit
+
+```{bash, eval = FALSE}
+git commit
+#[master (root-commit) 3b1dd4b] Add initial data
+# 1 file changed, 0 insertions(+), 0 deletions(-)
+# create mode 100644 data.csv
+git log
+#commit 3b1dd4b34ff438234522df589c87222c8e49acdc (HEAD -> master)
+#Author: Patrick Sadil <psadil@gmail.com>
+#Date:   Wed Sep 30 14:53:17 2020 -0400
+#    Add initial data
+#    
+#    Header should be an answer to "if applied, this commit will ..."
+```
+
+
+# tag
+
+add another file
+
+```{bash, eval = FALSE}
+git add analysis.R
+git commit -m "first analysis"
+git tag -a oct-1-2020
+# before meeting
+
+# I'm going to talk about some cool plots
+```
+
+# checkout the past
+
+```{bash}
+touch analysis2.R
+touch data.txt
+# edit data
+git add .
+git commit -m "Prepare for new analyses"
+git log --oneline
+```
+
+```{bash}
+git checkout oct-1-2020
+# take a look at the folder/data
+```
+
+```{bash}
+git checkout master
+```
+
+# large files
+
+produce figure
+
+```{bash}
+git lfs track "*.png"
+```
+
+
+# Ignore files
+
+in .gitignore, add hippa folder
+
+- https://rtyley.github.io/bfg-repo-cleaner/
+
+# Interim
+
+Take a step back. So far, we've started tracking files in a repository. This is 
+okay. Think of this as a chain of snapshots, some of which you've decided to make
+easily accessible (all states are accessible). 
+
+- neat, since you've injected a bit of context into your code. 
+ - As with many system of digital memory, the problem is rarely space; we can store 
+ loads of data! 
+ - Instead, we need good ways of indexing things. This process of committing different
+ snapshots, labeling each of them with a context, will be your system of indexing.
+ - I find it very helpful to create a tag before any meeting in which I'm going 
+ to present a newish analysis, or beforea some version of a paper/poster.
+
+- HOWEVER! Nothing has been backed up to the cloud! This is for github
+
+# GitHub
+
+create empty repository
+
+```{bash}
+git remote add origin git@github.com:psadil/tmp.git
+git remote -v
+git push -u --follow-tags origin master
+git status
+```
+
+# README
+
+add readme
+
+These words will mix with github
+
+```{bash}
+git add README.md
+git commit -m "Add readme"
+git push
+```
+
+
+NOTE: This is a good time to talk about conventions. There's a sense in which nothing is 'special' about a readme file. But historically, careful programmers put readme files in their folders. Github latched on to that idea and made it easy to display that information. I think that's partly for socialogical reasons, as a study in how conventions become solidified into rules. But, it also highlights the importance of looking at other people's work. 
+
+# Issues + branch
+
+Create issue on github
+
+Add a new Bayesian analysis.
+
+Link to Stan website.
+
+```{bash}
+git checkout -b dev/bayes
+touch R/model.stan
+touch R/run-stan.R
+git add .
+git commit
+# Add mixed effects model
+
+# Closes #1
+git push --set-upstream origin dev/bayes
+```
+
+ checkout on github
+
+# merge branch into master
+
+```{bash}
+git checkout master
+git merge dev/bayes
+git push
+```
+
+# delete branch
+
+branches and tags are very similar. 
+- a tag is a snapshot that you always want to find easily
+
+- a branch should be associated with a particular thing you're trying to do. 
+ - A new analysis
+ - fixing some bug
+ - working on a new version of an experiment
+ 
+That's why it's helpful to associate with an issue
+
+A branch resolves an issue. When the issue is resolved, delete the branch
+
+```{bash}
+git branch -d dev/bayes
+git push --delete origin dev/bayes
+```
+
+look around on github. see that the issue has been "closed"
+
+NOTE! This only makes it harder to access the branch! The information is still stored. This is a general principle; deleting committed things is hard. This is both good and bad. On the good side, it means that past versions are usually safe. They'll be harder to access, but you can get to every snapshot. 
+
+- on the bad side, if you accidentally commit sensitive information (e.g., hippa protected files, subject data), it's hard to rewrite history!
+
+git bfg repo cleaner
+
+https://rtyley.github.io/bfg-repo-cleaner/
+
+
+Now we're starting to do something powerful, really launching off. I think one of the most interesting
+things about Git is that it provides context for the different stages, and encourages you to focus on actionable goals. 
+
+# Merge conflicts
+
+```{bash}
+git checkout -b edit-data
+# edit
+git add data
+git commit -m "fix data file"
+git checkout master
+# edit data file here, too
+git add data
+git commit -m "fix data on master"
+git merge edit-data
+#Auto-merging data.csv
+#CONFLICT (content): Merge conflict in data.csv
+#Automatic merge failed; fix conflicts and then commit the result.
+git status
+
+git log --oneline --graph --all
+# fix merge conflicts
+
+```
+
+# SSH keys
+
+
+# Resources I consult regularly
+
+- [Git Pro Book](https://git-scm.com/book/en/v2)
+- Repositories of people I trust (e.g., [tidyverse packages](https://github.com/tidyverse))
